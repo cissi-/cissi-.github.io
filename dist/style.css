@@ -54,9 +54,11 @@ body {
 
 .box {
   padding-top: 10%;
-  padding-bottom: 5%;
+  padding-bottom: 10%;
   text-align: center;
-  place-items: center
+  place-items: center;
+  padding-left: 5px;
+  padding-right: 5px;
 }
 
 .fill-box {
@@ -71,14 +73,14 @@ body {
   background-color: #eeeef9;
   text-align: center;
   width: 100%;
-  max-width:1000px;
+  max-width: 1000px;
   padding: 2%;
 }
 
 .no-color-box {
   text-align: center;
   width: 100%;
-  max-width:1000px;
+  max-width: 1000px;
   padding: 2%;
 }
 
@@ -89,7 +91,7 @@ body {
 }
 
 .more-box {
-  align-text:left;
+  align-text: left;
   padding: 2%;
   background-color: cyan;
 }
@@ -102,26 +104,69 @@ body {
   color: inherit;
 }
 
-details[open] summary{
+details[open] summary {
   padding: 15px;
   max-width: 100%;
   border-radius: 0px;
-  text-align:left;
-  box-shadow: 0px 0px 0px 0px #EEEEEE;
+  text-align: left;
+  box-shadow: 0px 0px 0px 0px #eeeeee;
 }
 
-summary{
+summary {
   background-color: white;
   padding: 15px;
   max-width: 90px;
   border-radius: 5px;
-  box-shadow: 1px 1px 10px 2px #EEEEEE;
-  text-align:left;
+  box-shadow: 1px 1px 10px 2px #eeeeee;
+  text-align: left;
+  cursor: pointer;
 }
 
-
-::details-content{
+::details-content {
   background-color: white;
-  text-align:left;
+  text-align: left;
   padding-left: 15px;
+  padding-right: 15px;
+}
+
+/*TABS??*/
+/* Style the tab */
+.tab {
+  overflow: hidden;
+  /*border: 1px solid #ccc;
+  background-color: #f1f1f1;*/
+}
+
+/* Style the buttons that are used to open the tab content */
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  border-style: solid solid none solid;
+  border-radius: 30px 30px 0 0;
+  border-color: #eeeef9;
+  border-width: 2px;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #f1f1f9;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: #eeeef9;
+}
+
+/* Style the tab content */
+.tabcontent {
+  background-color: #eeeef9;
+  display: none;
+  padding: 6px 12px;
+  /*border: 1px solid #ccc;
+  border-top: none;*/
 }
