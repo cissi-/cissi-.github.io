@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Portfolio</title>
+      <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script><link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css'><link rel="stylesheet" href="./style.css">
+
+  </head>
+    
+  <body>
+  <div class="fixed header">
+  <div class="main-text header-text">
+    <p style="text-align:left;">
+      <a class="discrete-link" href="#Home">Home</a>
+      | <a class="discrete-link" href="#Project1">Apex Evolution</a>
+      | <a class="discrete-link" href="#Project2">Dice Prototype</a>
+      | <a class="discrete-link" href="#Project3">Kindread Spirits</a>
+      | <a class="discrete-link" href="#Project4">Neon Ascent</a>
+      <span style="float:right;">
+        <a class="discrete-link" href="programmering.html">Programming Portfolio</a> |
+        <a class="discrete-link" href="ljud.html">Sound Portfolio</a> |
+        <a class="discrete-link" href="mig.html">About me / Contact</a>
+      </span>
+    </p>
+  </div>
+</div>
+
+<div id="Home">
+
+  <div id="Project1" class="box">
+    <div class="main-text head-line">Apex Evolution</div>
+    <div class="color-box">
+      <div class="row">
+        <div class="col-sm-6">
+          <!------LÄNKA TILL YOUTUBE VIDEO------>
+          <iframe style="width:100%; aspect-ratio:16/9" src="https://www.youtube.com/embed/tgbNymZ7vqY"></iframe>
+        </div>
+        <div class="col-sm-6">
+          <div class="text-box">
+            Apex Evolution revolves entirely around the power fantasy of growing into a godzilla like monster; size here is key. Every system should feed back into this feeling since that becomes the shared motivation for the player and the player character. Destroy and eliminate to level up and outgrow what you just demolished and face bigger threats.
+            <br><br>
+            During our fulltime 8 week development cycle I mostly focused on implementing graphical aspects and creating juice & feedback systems. But during previous courses and in spare time I developed the foundation for the character controller and the enemy movement.
+
+          </div>
+        </div>
+      </div>
+      <!------DEATILS HÄR------>
+      <details>
+        <summary>
+          <i>Deep dive >></i>
+        </summary>
+        <!---TABS--->
+        <!-- Tab links -->
+        <div class="tab proj1">
+          <button class="tablinks active" onclick="openTab(event, 'ApexTab1')">Character Controller</button>
+          <button class="tablinks" onclick="openTab(event, 'ApexTab2')">Enemies</button>
+          <button class="tablinks" onclick="openTab(event, 'ApexTab3')">Juice & Feedback</button>
+          <button class="tablinks" onclick="openTab(event, 'ApexTab4')">Destructible Objects</button>
+        </div>
+
+        <!-- Tab content -->
+        <div id="ApexTab1" class="tabcontent proj1" style="display:block;">
+          <h3>Character Controller</h3>
+          <p>We wanted to use a lot of physics for different feedback systems so utilizing Unity’s physics engine across the board became the cleanest solution. Although instead of using the built in addforce functions the character forces are applied to different buffer velocities before being summed together and applied to the rigidbody only once per update loop. The splitting of different velocities (horizontal, vertical, dash, knockback) makes it easier to keep track of what is affecting the movement at what time when debugging. While providing more clarity it still provides the character controller with tweakability when it comes to acceleration and inertia. Changing character movement should be more straightforward than adjusting rigidbody settings.</p>
+        </div>
+
+        <div id="ApexTab2" class="tabcontent proj1">
+          <h3>Enemies</h3>
+          <p>The enemies would come in swarms which instantly made it apparent they needed to handle movement that took both environment and other enemies into account. Boids instantly came to my mind as it would create more dynamic enemies that could split their squad moving around objects and still find their way towards the player. The game designer on the project desired more sophisticated path finding where the enemies could determine the shortest route when more intricate choke points were introduced into the level design. Instead of pivoting entirely to Flowfields we combined the two where the target weight could utilize the points from the flowfield or the player’s location depending on raycast between the entities.</p>
+        </div>
+
+        <div id="ApexTab3" class="tabcontent proj1">
+          <h3>Juice & Feedback</h3>
+          <p>The feeling of being a big monster is at the core of the experience which the juice needs to convey. Ragdoll limbs that gets enabled in appropriate states and gets passed the velocity from the root hitbox adds a lot on its own, but the next step is factoring in the size difference between the player and the enemy.
+            <br><br>
+            I made static managers for screen shakes (through the Cinemachine component), audio and time slowdown for cinematic hitstop effects that are easily called wherever necessary without coupling.
+          </p>
+        </div>
+
+        <div id="ApexTab4" class="tabcontent proj1">
+          <h3>Destructible Objects</h3>
+          <p>I structured the system for destructible objects very much inspired by <a href="https://www.youtube.com/watch?v=kODJsQGXanU">Remedy’s approach in Control (2019)</a> where they setup materials instead of going object by object. Their system handles chipping off corners of objects as well, which I deemed not worth the effort at the moment for Apex Evolution. Limiting your ability to destroy an object behind a size requirement felt more important to convey the power fantasy of outgrowing your targets and setting the player’s sights upon bigger targets instead of chipping away at corners they are too small for anyways. A simple hit decal and impact VFX gives enough feedback that you are interacting with it in some regard to not deter from further interactions.
+            <br><br>
+            Every destructible object contains a child with the complete mesh and a compound collider to register hits and a child with the destructible “chunks” that gets enabled when health reaches 0. Instead of instantiating the chunks some of the performance is averted to setup since a lot of instantiating occurs during runtime, with enemies and bullets, etc.
+            <br><br>
+            I wanted adding new objects, new materials and new VFX to be a simple streamlined process that enables graphical artists to expand on the visual fidelity on their own. Through Prefab Variants the complete mesh and the mesh containing all the chunks are simply dragged to respective child object and the chunks are dragged into a list on the main object. Settings are then split cohesively between the destructible object and the material, which is a scriptable object that contains all relevant stats for the chunks. Physics for the rigidbody gets applied and VFX can be changed in one place instead of having to go through every little part of an object.
+          </p>
+        </div>
+        <!---end tabs--->
+        <br>
+      </details>
+      <!--end details-->
+    </div>
+  </div>
+
+  <div id="Project2" class="box">
+    <div class="main-text head-line">Dice Prototype</div>
+    <div class="color-box">
+      <div class="row">
+        <div class="col-sm-6">
+          <!------LÄNKA TILL YOUTUBE VIDEO------>
+          <iframe style="width:100%; aspect-ratio:16/9" src="https://www.youtube.com/embed/tgbNymZ7vqY"></iframe>
+        </div>
+        <div class="col-sm-6">
+          <div class="text-box">
+            For my thesis work I wanted to delve into more hardware specific feedback. Controlling a virtual dice cup through the accelerometer in your phone created excellent opportunity for immersive haptic feedback.
+            <br><br>
+            I created two different implementations where the player simply could interact and throw a die: one more classic mobile game interaction reminiscent of Pokémon Go, and one more unique and interactive interaction akin to Nintendo Wii Games.
+          </div>
+        </div>
+      </div>
+      <!------DEATILS HÄR------>
+      <details>
+        <summary>
+          <i>Deep dive >></i>
+        </summary>
+        <!---TABS--->
+        <!-- Tab links -->
+        <div class="tab proj2">
+          <button class="tablinks active" onclick="openTab(event, 'DiceTab1')">Accelerometer</button>
+          <button class="tablinks" onclick="openTab(event, 'DiceTab2')">Touch Screen</button>
+        </div>
+
+        <!-- Tab content -->
+        <div id="DiceTab1" class="tabcontent proj2" style="display:block;">
+          <h3>Accelerometer</h3>
+          <p>The cup interaction was more straightforward to implement since it was mostly setting up the accelerometer orientation correctly to the 3D model. The physics are handled by the Unity Physics engine but demanded a lot more fiddling with settings to run appropriately on mobile. Hitting the sweet spot of enough physics computation to not let the dice slip through at high speeds but not be too much of a performance issue. The interaction between the cup and the die creates a natural event for haptic feedback and sound effects to trigger when compared to a touch screen based interaction. The speed of the dice can be tied to how powerful the haptic feedback is, which gives a nice touch of realism.</p>
+        </div>
+
+        <div id="DiceTab2" class="tabcontent proj2">
+          <h3>Touch Screen</h3>
+          <p>“Holding” the die by touching the screen and spinning it around by dragging it around requires a more designed approach. Instead of tweaking the physics settings of the project and rigidbody / physics materials for the dice to feel good, the intervals of receiving feedback needs to be manually set. Testers of the prototype talked about the feeling of “charging up your throw” so I tied the interval to how fast the die is spinning. The power of the haptic feedback was a bit tricky, I ended up making it more powerful the closer the die is to your finger. Having the die be set exactly below your finger won’t feel satisfying so it instead moves towards that location creating a slingshot like effect when “shaking” the die around.</p>
+        </div>
+        <!---end tabs--->
+        <br>
+      </details>
+      <!--end details-->
+    </div>
+  </div>
+
+  <div id="Project3" class="box">
+    <div class="main-text head-line">Kindread Spirits <div class="main-text sub-head-line"><br>8 weeks</div>
+    </div>
+    <div class="color-box">
+      <div class="row">
+        <div class="col-sm-6">
+          <!------LÄNKA TILL YOUTUBE VIDEO------>
+          <iframe style="width:100%; aspect-ratio:16/9" src="https://www.youtube.com/embed/tgbNymZ7vqY"></iframe>
+        </div>
+        <div class="col-sm-6">
+          <div class="text-box">
+            Kindread Spirits is an asymmetrical (local) co-op 3D platformer where both players can pass each other souls that are used in different ways depending on the character. One player controls a spellcaster who can shoot the soul in a far straight line to imbue objects with the soul to then control it and move it around. The other player controls a more nimble character who can lob souls in a shorter arc, but store up to 3 souls which alters their weight and allows extra jumps per soul.
+            <br><br>
+            I handled everything from character controller & camera, character abilities, lighting, etc. Pretty much every system and interaction apart from character selection, menus, doors and pressure plates.
+          </div>
+        </div>
+      </div>
+      <!------DEATILS HÄR------>
+      <details>
+        <summary>
+          <i>Deep dive >></i>
+        </summary>
+        <!---TABS--->
+        <!-- Tab links -->
+        <div class="tab proj3">
+          <button class="tablinks active" onclick="openTab(event, 'KindreadTab1')">Souls</button>
+          <button class="tablinks" onclick="openTab(event, 'KindreadTab2')">Object Controlling</button>
+        </div>
+
+        <!-- Tab content -->
+        <div id="KindreadTab1" class="tabcontent proj3" style="display:block;">
+          <h3>Souls</h3>
+          <p>The souls as a resource had some very distinct behaviours that instantly became suitable for a finite state machine. They would be idling around a point in the level where they could be picked up (proximity based) and then held by a player. When held by a player it was set to a position in the animation rig and each ability component recognized there was a resource to be utilized. When the soul was used the number was reduced and the soul was either in a shooting state, thrown state and eventually a return state where it rapidly moves back to the spot it was collected. The different states became vital when depending on the states needed to be able to interact with specific colliders whilst ignoring others, since the souls were to be passed between the players or shot at objects or buttons.</p>
+        </div>
+
+        <div id="KindreadTab2" class="tabcontent proj3">
+          <h3>Object Controlling</h3>
+          <p>For my second programming project I was focusing a lot on creating systems which the designers could iterate and try different things with. When the designer asked for the ability to possess and control one object I saw the potential in having several different objects for puzzles, so I made a List of the affected objects and a cap to enable the system for one or more objects. Choosing which object to control became a matter of which was closest to the player since that solution wouldn’t affect gameplay if we stuck to only one object (we did).
+            <br><br>
+            I also saw the potential in puzzle design that different objects behaved differently: different weights or speed could play a part in puzzles requiring a specific object or more objects to solve. The most straightforward way to provide this option was to give every object their own character controller script and simply change which one was active for the spellcaster player when they activated their control ability. This very naive approach felt great at the time since but introduced a lot of potential for bugs but with the limited time I could spend on each system it was worth the trouble. If I redid the system I would have probably used scriptable objects to create different stats for the objects and handled the movement through a state machine instead.
+          </p>
+        </div>
+        <!---end tabs--->
+        <br>
+      </details>
+      <!--end details-->
+    </div>
+  </div>
+
+  <div id="Project4" class="box">
+    <div class="main-text head-line">Neon Ascent
+      <div class="main-text sub-head-line"><br>8 weeks</div>
+    </div>
+    <div class="color-box">
+      <div class="row">
+        <div class="col-sm-6">
+          <!------LÄNKA TILL YOUTUBE VIDEO------>
+          <iframe style="width:100%; aspect-ratio:16/9" src="https://www.youtube.com/embed/tgbNymZ7vqY"></iframe>
+        </div>
+        <div class="col-sm-6">
+          <div class="text-box">
+            My first ever project doing more than sound design and implementation. Being the sole programmer on this 2D endless jumping game.
+            <ul>
+              <li>Infinite, prefab variants (two designers, suitable tool for them to work with)</li>
+              <li>Different ways of making it seem less repetitive:
+                <ul>
+                  <li>Dynamic Lighting</li>
+                  <li>Flipping the prefabs to double the amount with 0 work</li>
+                  <li>Different Coin Layout</li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!------DEATILS HÄR------>
+      <details>
+        <summary>
+          <i>Deep dive >></i>
+        </summary>
+        <!---TABS--->
+        <!-- Tab links -->
+        <div class="tab proj4">
+          <button class="tablinks active" onclick="openTab(event, 'NeonTab1')">Endless Level</button>
+          <button class="tablinks" onclick="openTab(event, 'NeonTab2')">Tab2</button>
+        </div>
+
+        <!-- Tab content -->
+        <div id="NeonTab1" class="tabcontent proj4" style="display:block;">
+          <h3>Endless Level</h3>
+          <p>With the group being consistent of two game designers and one graphical artist, I wanted to enable the designers to work on their own so I designed a structure to instantiate prefab variants which they both could design segments simultaneously after deciding some core rules that sorts out the overlap between every segment so that they always will allow the player to
+            <br><br>
+            and focus on aspects that fool the player into thinking how it is the same level parts they encounter
+          </p>
+        </div>
+
+        <div id="NeonTab2" class="tabcontent proj4">
+          <h3>Tab2</h3>
+          <p>In case of more?
+          </p>
+        </div>
+        <!---end tabs--->
+        <br>
+      </details>
+      <!--end details-->
+    </div>
+  </div>
+
+  <div class="fixed footer">
+    <div class="main-text footer-text">
+      <p style="text-align:left;">
+        © Alexander Barboni
+        <span style="float:right;text-align:center;">
+          <a class="discrete-link" href="https://www.facebook.com/wallin.cissi/">Facebook</a>
+          <a class="discrete-link" href="https://www.instagram.com/piginpjs/">Instagram</a><br>
+          <a class="discrete-link" href="https://github.com/cissi-">GitHub</a>
+          <a class="discrete-link" href="https://www.freecodecamp.org/cissi-">freecodecamp</a>
+          <a class="discrete-link" href="https://www.linkedin.com/in/wallin-cissi">Linked-in</a></span>
+      </p>
+    </div>
+  </div>
+    <script  src="./script.js"></script>
+
+  </body>
+  
+</html>
